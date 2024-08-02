@@ -1,5 +1,6 @@
 # SuzakuHK2DF
 Convert housekeeping data (FITS file format) from the Suzaku into a DataFrame.
+The assumption is that the FITS file name is `ae[file number].hk`.
 
 ## Housekeeping data of Suzaku
 - About Suzaku: https://www.isas.jaxa.jp/missions/spacecraft/past/suzaku.html
@@ -7,7 +8,7 @@ Convert housekeeping data (FITS file format) from the Suzaku into a DataFrame.
   - DARTS/Suzaku: https://darts.isas.jaxa.jp/astro/suzaku/
   - Suzaku/ver3.0: https://data.darts.isas.jaxa.jp/pub/suzaku/ver3.0/
 
-## `filters.py`
+## `filters.yaml`
 ### `exclude_unit_filter`
 - Ignore data with physical units in this list.
 ### `data_name_filter`
