@@ -1,3 +1,5 @@
+import os
+
 import astropy.io.fits
 import pandas as pd
 import yaml
@@ -10,9 +12,9 @@ class SuzakuHK2DF:
         self.data_dir_path = data_dir_path
 
     def setup(self, output_data_filter=False):
+        cd = os.path.dirname(os.path.abspath(__file__))
         # Setup filename_list
-        table_file_path = "conf/suzaku_data_list.csv"
-        table = pd.read_csv(table_file_path)
+        table = pd.read_csv(os.path.join(cd, "conf/suzaku_data_list.csv"))
         table["observation_start_time"] = pd.to_datetime(
             table["observation_start_time"]
         )
@@ -27,7 +29,7 @@ class SuzakuHK2DF:
             .to_list()
         )
         # Setup data_filter
-        with open("conf/filters.yaml") as f:
+        with open(os.path.join(cd, "conf/filters.yaml")) as f:
             conf = yaml.safe_load(f)
             excluded_unit_list = conf["exclude_unit_filter"]
             exclude_unit_filter = bool(excluded_unit_list)
