@@ -11,7 +11,7 @@ class SuzakuHK2DF:
         self.end_datetime = pd.to_datetime(end_datetime)
         self.data_dir_path = data_dir_path
 
-    def setup(self, output_data_filter=False):
+    def setup(self, output_data_filter: bool = False):
         cd = os.path.dirname(os.path.abspath(__file__))
         # Setup filename_list
         table = pd.read_csv(os.path.join(cd, "conf/suzaku_data_list.csv"))
@@ -69,10 +69,16 @@ class SuzakuHK2DF:
     def _url2filename(self, url):
         return "ae%s.hk" % url.rstrip("/").split("/")[-1]
 
-    def hk2df(self, resample_interval_sec=None):
+    def hk2df(
+        self,
+        fill_nan: bool = False,
+        resample_interval_sec: int = None,
+        variance_threshold: float = None,
+    ):
         df = pd.DataFrame()
+        total_index = len(set(self.data_filter["index"].values))
         for i in set(self.data_filter["index"].values):
-            print("Processing index: ", i)
+            print("Processing index: %d/%d" % (i, total_index))
             data_name_list = self.data_filter[self.data_filter["index"] == i][
                 "data_name"
             ].to_list()
@@ -107,7 +113,11 @@ class SuzakuHK2DF:
         df.sort_index(inplace=True)
         if resample_interval_sec is not None:
             df = self._resampling(df, resample_interval_sec)
+        if fill_nan:
+            df.ffill(inplace=True)
         df = df.loc[self.start_datetime : self.end_datetime]
+        if variance_threshold is not None:
+            df = df.loc[:, df.var() > variance_threshold]
         return df
 
     def _resampling(self, df, interval_sec):

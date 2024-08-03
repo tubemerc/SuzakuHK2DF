@@ -1,24 +1,9 @@
+# Example of filters.yaml file
 exclude_unit_filter:
   - s
   - 1/32 s
   - ms
   - day
-  - Pulse
-  - pixel
-  - nT
-  - mG
-  - mNm
-  - deg/h
-  - rad
-  - deg/s
-  - Nms
-  - deg
-  - Atm^2
-  - rad/s
-  - rpm
-  - rad^2
-  - km
-  - km/s
 
 data_name_filter:
   - DIST
